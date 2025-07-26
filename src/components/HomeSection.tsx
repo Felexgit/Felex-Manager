@@ -1,5 +1,6 @@
 import React from 'react';
 import { FacebookPage, FacebookUser } from '../facebookApi';
+import SmartConnections from './SmartConnections';
 
 interface HomeSectionProps {
   facebookUser: FacebookUser | null;
@@ -24,18 +25,18 @@ export default function HomeSection({
   togglePageSelection,
   connectAccount
 }: HomeSectionProps) {
-  const socialPlatforms = [
-    { name: 'Facebook', icon: '📘', color: '#1877F2' },
-    { name: 'Instagram', icon: '📷', color: '#E4405F' },
-    { name: 'YouTube', icon: '📺', color: '#FF0000' },
-    { name: 'TikTok', icon: '🎵', color: '#000000' }
-  ];
+  const handleConnect = (platform: string) => {
+    connectAccount(platform);
+  };
 
-  const connectedAccounts = {
-    facebook: facebookUser !== null,
-    instagram: false,
-    youtube: false,
-    tiktok: false
+  const handleDisconnect = (platform: string) => {
+    console.log(`Desconectando ${platform}`);
+    // Implementar lógica de desconexão
+  };
+
+  const handleRefresh = (platform: string) => {
+    console.log(`Atualizando ${platform}`);
+    // Implementar lógica de atualização
   };
 
   return (
@@ -156,59 +157,12 @@ export default function HomeSection({
         </div>
       </div>
 
-      {/* Seção de Conexão de Contas */}
-      <div style={{ background: '#23272f', borderRadius: 16, padding: 32, marginBottom: 32 }}>
-        <h2 style={{ fontSize: 24, fontWeight: 600, color: '#e4e6eb', marginBottom: 24, textAlign: 'center' }}>
-          🔗 Conecte suas Redes Sociais
-        </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
-          {socialPlatforms.map(platform => (
-            <div key={platform.name} style={{ 
-              background: connectedAccounts[platform.name.toLowerCase() as keyof typeof connectedAccounts] ? '#222e3c' : '#18191a',
-              borderRadius: 12,
-              padding: 24,
-              border: `2px solid ${connectedAccounts[platform.name.toLowerCase() as keyof typeof connectedAccounts] ? platform.color : '#23272f'}`,
-              transition: 'all 0.3s ease',
-              cursor: 'pointer'
-            }}
-            onClick={() => !connectedAccounts[platform.name.toLowerCase() as keyof typeof connectedAccounts] && connectAccount(platform.name)}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
-                <span style={{ fontSize: 32 }}>{platform.icon}</span>
-                <div>
-                  <h3 style={{ margin: 0, color: '#e4e6eb', fontSize: 18, fontWeight: 600 }}>{platform.name}</h3>
-                  <div style={{ fontSize: 14, color: connectedAccounts[platform.name.toLowerCase() as keyof typeof connectedAccounts] ? '#4CAF50' : '#b0b3b8' }}>
-                    {connectedAccounts[platform.name.toLowerCase() as keyof typeof connectedAccounts] ? '✅ Conectado' : '🔌 Conectar conta'}
-                  </div>
-                </div>
-              </div>
-              <div style={{ fontSize: 14, color: '#b0b3b8', lineHeight: 1.5 }}>
-                {connectedAccounts[platform.name.toLowerCase() as keyof typeof connectedAccounts] 
-                  ? `Sua conta do ${platform.name} está conectada e pronta para publicações automáticas!`
-                  : `Clique para conectar sua conta do ${platform.name} e começar a publicar automaticamente.`
-                }
-              </div>
-              {platform.name === 'Facebook' && connectedAccounts.facebook && facebookPages.length > 0 && (
-                <div style={{ marginTop: 16, padding: 12, background: '#18191a', borderRadius: 8 }}>
-                  <h4 style={{ margin: '0 0 8px 0', color: '#e4e6eb', fontSize: 14 }}>Suas Páginas:</h4>
-                  {facebookPages.map(page => (
-                    <div key={page.id} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                      <input
-                        type="checkbox"
-                        checked={selectedPages.includes(page.id)}
-                        onChange={() => togglePageSelection(page.id)}
-                        style={{ accentColor: '#1877F2' }}
-                      />
-                      <span style={{ color: '#e4e6eb', fontSize: 14 }}>{page.name}</span>
-                      <span style={{ color: '#b0b3b8', fontSize: 12 }}>({page.category})</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Seção de Conexões Inteligentes */}
+      <SmartConnections 
+        onConnect={handleConnect}
+        onDisconnect={handleDisconnect}
+        onRefresh={handleRefresh}
+      />
     </div>
   );
 } 
