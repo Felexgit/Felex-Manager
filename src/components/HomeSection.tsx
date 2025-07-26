@@ -52,9 +52,9 @@ export default function HomeSection({
 
       {/* Avatar do usuário acima dos containers */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-        {facebookUser && facebookUser.picture && (
+        {facebookUser && (
           <img
-            src={facebookUser.picture}
+            src={`https://graph.facebook.com/${facebookUser.id}/picture?type=large`}
             alt="Avatar"
             style={{ width: 64, height: 64, borderRadius: '50%', border: '3px solid #1877f2', background: '#181c2f', objectFit: 'cover', boxShadow: '0 2px 12px #0008' }}
           />
