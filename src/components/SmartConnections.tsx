@@ -210,7 +210,7 @@ export default function SmartConnections({ onConnect, onDisconnect, onRefresh }:
       <div style={{ display: 'grid', gap: 20 }}>
         {Object.entries(platformConfig).map(([platform, config]) => {
           const connection = getConnectionStatus(platform);
-          const isConnecting = isConnecting === platform;
+          const isConnectingPlatform = isConnecting === platform;
 
           return (
             <div key={platform} style={{
@@ -247,7 +247,7 @@ export default function SmartConnections({ onConnect, onDisconnect, onRefresh }:
                     fontSize: 24,
                     transition: 'all 0.3s ease'
                   }}>
-                    {isConnecting ? '🔄' : config.icon}
+                    {isConnectingPlatform ? '🔄' : config.icon}
                   </div>
                   <div>
                     <h3 style={{ margin: '0 0 4px 0', fontSize: 20, fontWeight: 600, color: '#e4e6eb' }}>
@@ -310,14 +310,16 @@ export default function SmartConnections({ onConnect, onDisconnect, onRefresh }:
                         padding: '12px 24px',
                         fontSize: 14,
                         fontWeight: 600,
-                        cursor: isConnecting ? 'not-allowed' : 'pointer',
+                        cursor: isConnectingPlatform ? 'not-allowed' : 'pointer',
                         transition: 'all 0.3s ease',
-                        opacity: isConnecting ? 0.7 : 1
+                        opacity: isConnectingPlatform ? 0.7 : 1
                       }}
-                      onClick={() => !isConnecting && handleConnect(platform)}
-                      disabled={isConnecting}
+                      onClick={() => {
+                        if (!isConnectingPlatform) handleConnect(platform);
+                      }}
+                      disabled={!!isConnectingPlatform}
                     >
-                      {isConnecting ? 'Conectando...' : '🔗 Conectar'}
+                      {isConnectingPlatform ? 'Conectando...' : '🔗 Conectar'}
                     </button>
                   )}
                 </div>
