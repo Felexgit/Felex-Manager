@@ -116,7 +116,7 @@ export default function HomeSection({
           </button>
         </div>
         {/* WhatsApp */}
-        <div style={{ background: '#23272f', borderRadius: 16, padding: 24, minWidth: 280, maxWidth: 340, flex: 1, borderTop: '4px solid #25D366', boxShadow: '0 2px 12px #0004' }}>
+        <div style={{ background: '#23272f', borderRadius: 16, padding: 24, minWidth: 280, maxWidth: 340, flex: 1, borderTop: '4px solid #25D366', boxShadow: '0 2px 12px #0004', position: 'relative' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
             <span style={{ fontSize: 28 }}>💬</span>
             <h3 style={{ margin: 0, color: '#e4e6eb', fontSize: 20 }}>WhatsApp</h3>
@@ -127,6 +127,32 @@ export default function HomeSection({
             <KPI label="Engajamento" value="1.1K" color="#075E54" />
             <KPI label="Agendados" value={2} color="#4CAF50" />
           </div>
+          {/* Botão de conectar WhatsApp */}
+          <button
+            style={{
+              marginTop: 18,
+              width: '100%',
+              background: 'linear-gradient(90deg, #25D366 60%, #128C7E 100%)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 8,
+              padding: '12px 0',
+              fontWeight: 600,
+              fontSize: 16,
+              cursor: 'pointer',
+              boxShadow: '0 2px 8px #0003',
+              letterSpacing: 1
+            }}
+            onClick={() => {
+              const clientId = '3131820566980255';
+              const redirectUri = encodeURIComponent('https://felex-manager.vercel.app/whatsapp-callback');
+              const scope = 'whatsapp_business_management,whatsapp_business_messaging,pages_show_list';
+              const authUrl = `https://www.facebook.com/v19.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&state=wa_connect`;
+              window.location.href = authUrl;
+            }}
+          >
+            Conectar WhatsApp
+          </button>
         </div>
       </div>
 

@@ -11,6 +11,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import UserDataDeletion from './pages/UserDataDeletion';
 import InstagramCallback from './pages/InstagramCallback';
+import WhatsAppCallback from './pages/WhatsAppCallback';
 
 const MENU_ITEMS = [
   { label: 'Home', icon: '🏠' },
@@ -470,6 +471,9 @@ function App() {
   }
   if (legalPath === '/instagram-callback') {
     return <InstagramCallback />;
+  }
+  if (legalPath === '/whatsapp-callback') {
+    return <WhatsAppCallback />;
   }
 
   // Só exibir Auth se não for uma página legal
