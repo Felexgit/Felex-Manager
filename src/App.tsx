@@ -7,6 +7,9 @@ import FacebookAPI, { FacebookPage, FacebookUser, FacebookPost, FacebookStory, F
 import HomeSection from './components/HomeSection';
 import PostsStoriesSection from './components/PostsStoriesSection';
 import NotificationsSection from './components/NotificationsSection';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import UserDataDeletion from './pages/UserDataDeletion';
 
 const MENU_ITEMS = [
   { label: 'Home', icon: '🏠' },
@@ -456,15 +459,12 @@ function App() {
   // Renderização de páginas legais conforme o path
   const legalPath = window.location.pathname;
   if (legalPath === '/privacy-policy') {
-    const PrivacyPolicy = require('./pages/PrivacyPolicy').default;
     return <PrivacyPolicy />;
   }
   if (legalPath === '/terms-of-service') {
-    const TermsOfService = require('./pages/TermsOfService').default;
     return <TermsOfService />;
   }
   if (legalPath === '/user-data-deletion') {
-    const UserDataDeletion = require('./pages/UserDataDeletion').default;
     return <UserDataDeletion />;
   }
 
