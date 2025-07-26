@@ -140,6 +140,7 @@ function FullCalendar({ selectedDate, onSelect }: { selectedDate: string, onSele
   );
 }
 
+
 function CreatePostModal({ open, onClose, onCreate, defaultDate }: { open: boolean, onClose: () => void, onCreate: (post: any) => void, defaultDate?: string }) {
   const [postType, setPostType] = useState<'image' | 'video'>('image');
   const [postFile, setPostFile] = useState<File | null>(null);
@@ -458,6 +459,21 @@ function App() {
   const userName = user?.email?.split('@')[0] || 'Usuário';
   const userPhoto = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=1877f2&color=fff&size=128`;
 
+  // Renderização de páginas legais conforme o path
+  const legalPath = window.location.pathname;
+  if (legalPath === '/privacy-policy') {
+    const PrivacyPolicy = require('./pages/PrivacyPolicy').default;
+    return <PrivacyPolicy />;
+  }
+  if (legalPath === '/terms-of-service') {
+    const TermsOfService = require('./pages/TermsOfService').default;
+    return <TermsOfService />;
+  }
+  if (legalPath === '/user-data-deletion') {
+    const UserDataDeletion = require('./pages/UserDataDeletion').default;
+    return <UserDataDeletion />;
+  }
+
   return (
     <div className="App">
       <aside className="sidebar">
@@ -602,6 +618,11 @@ function App() {
           </>
         )}
       </main>
+      <footer style={{ marginTop: 40, textAlign: 'center', color: '#aaa', fontSize: 14 }}>
+        <a href="/privacy-policy" style={{ color: '#aaa', marginRight: 16 }}>Política de Privacidade</a>
+        <a href="/terms-of-service" style={{ color: '#aaa', marginRight: 16 }}>Termos de Serviço</a>
+        <a href="/user-data-deletion" style={{ color: '#aaa' }}>Exclusão de Dados</a>
+      </footer>
     </div>
   );
 }
