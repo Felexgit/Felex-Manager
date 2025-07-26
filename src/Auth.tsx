@@ -67,6 +67,11 @@ export default function Auth({ onAuth }: { onAuth: () => void }) {
           {isLogin ? 'Cadastre-se' : 'Entrar'}
         </button>
       </p>
+      <footer style={{ marginTop: 40, textAlign: 'center', color: '#aaa', fontSize: 14 }}>
+        <a href="/privacy-policy" style={{ color: '#aaa', marginRight: 16 }}>Política de Privacidade</a>
+        <a href="/terms-of-service" style={{ color: '#aaa', marginRight: 16 }}>Termos de Serviço</a>
+        <a href="/user-data-deletion" style={{ color: '#aaa' }}>Exclusão de Dados</a>
+      </footer>
     </div>
   );
 } 
