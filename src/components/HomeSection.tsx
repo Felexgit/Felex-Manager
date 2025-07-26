@@ -50,42 +50,57 @@ export default function HomeSection({
         </p>
       </div>
 
-      {/* Cards de Estatísticas */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 20, marginBottom: 32 }}>
-        <div style={{ background: '#23272f', borderRadius: 16, padding: 24, borderLeft: '4px solid #1877F2' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-            <span style={{ fontSize: 24 }}>📊</span>
-            <h3 style={{ margin: 0, color: '#e4e6eb' }}>Total de Publicações</h3>
-          </div>
-          <div style={{ fontSize: 32, fontWeight: 700, color: '#1877F2' }}>24</div>
-          <div style={{ fontSize: 14, color: '#b0b3b8' }}>+12% este mês</div>
-        </div>
+      {/* Avatar do usuário acima dos containers */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
+        {facebookUser && facebookUser.picture && (
+          <img
+            src={facebookUser.picture}
+            alt="Avatar"
+            style={{ width: 64, height: 64, borderRadius: '50%', border: '3px solid #1877f2', background: '#181c2f', objectFit: 'cover', boxShadow: '0 2px 12px #0008' }}
+          />
+        )}
+      </div>
 
-        <div style={{ background: '#23272f', borderRadius: 16, padding: 24, borderLeft: '4px solid #E4405F' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-            <span style={{ fontSize: 24 }}>👥</span>
-            <h3 style={{ margin: 0, color: '#e4e6eb' }}>Alcance Total</h3>
+      {/* Containers horizontais para cada rede */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, justifyContent: 'center', marginBottom: 32 }}>
+        {/* Facebook */}
+        <div style={{ background: '#23272f', borderRadius: 16, padding: 24, minWidth: 280, maxWidth: 340, flex: 1, borderTop: '4px solid #1877F2', boxShadow: '0 2px 12px #0004' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+            <span style={{ fontSize: 28 }}>📘</span>
+            <h3 style={{ margin: 0, color: '#e4e6eb', fontSize: 20 }}>Facebook</h3>
           </div>
-          <div style={{ fontSize: 32, fontWeight: 700, color: '#E4405F' }}>15.2K</div>
-          <div style={{ fontSize: 14, color: '#b0b3b8' }}>+8% esta semana</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <KPI label="Total de Publicações" value={24} color="#1877F2" />
+            <KPI label="Alcance Total" value="15.2K" color="#42a5f5" />
+            <KPI label="Engajamento" value="2.8K" color="#00f2ea" />
+            <KPI label="Agendados" value={7} color="#4CAF50" />
+          </div>
         </div>
-
-        <div style={{ background: '#23272f', borderRadius: 16, padding: 24, borderLeft: '4px solid #FF0000' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-            <span style={{ fontSize: 24 }}>❤️</span>
-            <h3 style={{ margin: 0, color: '#e4e6eb' }}>Engajamento</h3>
+        {/* Instagram */}
+        <div style={{ background: '#23272f', borderRadius: 16, padding: 24, minWidth: 280, maxWidth: 340, flex: 1, borderTop: '4px solid #E4405F', boxShadow: '0 2px 12px #0004' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+            <span style={{ fontSize: 28 }}>📷</span>
+            <h3 style={{ margin: 0, color: '#e4e6eb', fontSize: 20 }}>Instagram</h3>
           </div>
-          <div style={{ fontSize: 32, fontWeight: 700, color: '#FF0000' }}>2.8K</div>
-          <div style={{ fontSize: 14, color: '#b0b3b8' }}>+15% hoje</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <KPI label="Total de Publicações" value={12} color="#E4405F" />
+            <KPI label="Alcance Total" value="8.1K" color="#f77737" />
+            <KPI label="Engajamento" value="1.9K" color="#fd1d1d" />
+            <KPI label="Agendados" value={3} color="#4CAF50" />
+          </div>
         </div>
-
-        <div style={{ background: '#23272f', borderRadius: 16, padding: 24, borderLeft: '4px solid #00f2ea' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-            <span style={{ fontSize: 24 }}>📅</span>
-            <h3 style={{ margin: 0, color: '#e4e6eb' }}>Agendados</h3>
+        {/* WhatsApp */}
+        <div style={{ background: '#23272f', borderRadius: 16, padding: 24, minWidth: 280, maxWidth: 340, flex: 1, borderTop: '4px solid #25D366', boxShadow: '0 2px 12px #0004' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+            <span style={{ fontSize: 28 }}>💬</span>
+            <h3 style={{ margin: 0, color: '#e4e6eb', fontSize: 20 }}>WhatsApp</h3>
           </div>
-          <div style={{ fontSize: 32, fontWeight: 700, color: '#00f2ea' }}>7</div>
-          <div style={{ fontSize: 14, color: '#b0b3b8' }}>Próximos 7 dias</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <KPI label="Total de Mensagens" value={58} color="#25D366" />
+            <KPI label="Alcance Total" value="2.3K" color="#128C7E" />
+            <KPI label="Engajamento" value="1.1K" color="#075E54" />
+            <KPI label="Agendados" value={2} color="#4CAF50" />
+          </div>
         </div>
       </div>
 
@@ -142,6 +157,16 @@ export default function HomeSection({
           ))}
         </div>
       </div>
+    </div>
+  );
+} 
+
+// Adicionar componente KPI auxiliar no final do arquivo
+function KPI({ label, value, color }: { label: string; value: string | number; color: string }) {
+  return (
+    <div style={{ background: '#181c2f', borderRadius: 10, padding: '16px 10px', textAlign: 'center', boxShadow: '0 1px 6px #0002' }}>
+      <div style={{ color, fontWeight: 700, fontSize: 22, marginBottom: 4 }}>{value}</div>
+      <div style={{ color: '#b0b3b8', fontSize: 13 }}>{label}</div>
     </div>
   );
 } 
