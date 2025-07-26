@@ -77,7 +77,7 @@ export default function HomeSection({
           </div>
         </div>
         {/* Instagram */}
-        <div style={{ background: '#23272f', borderRadius: 16, padding: 24, minWidth: 280, maxWidth: 340, flex: 1, borderTop: '4px solid #E4405F', boxShadow: '0 2px 12px #0004' }}>
+        <div style={{ background: '#23272f', borderRadius: 16, padding: 24, minWidth: 280, maxWidth: 340, flex: 1, borderTop: '4px solid #E4405F', boxShadow: '0 2px 12px #0004', position: 'relative' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
             <span style={{ fontSize: 28 }}>📷</span>
             <h3 style={{ margin: 0, color: '#e4e6eb', fontSize: 20 }}>Instagram</h3>
@@ -88,6 +88,32 @@ export default function HomeSection({
             <KPI label="Engajamento" value="1.9K" color="#fd1d1d" />
             <KPI label="Agendados" value={3} color="#4CAF50" />
           </div>
+          {/* Botão de conectar Instagram */}
+          <button
+            style={{
+              marginTop: 18,
+              width: '100%',
+              background: 'linear-gradient(90deg, #E4405F 60%, #fd1d1d 100%)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 8,
+              padding: '12px 0',
+              fontWeight: 600,
+              fontSize: 16,
+              cursor: 'pointer',
+              boxShadow: '0 2px 8px #0003',
+              letterSpacing: 1
+            }}
+            onClick={() => {
+              const clientId = '1572473227491051';
+              const redirectUri = encodeURIComponent('https://felex-manager.vercel.app/instagram-callback');
+              const scope = 'instagram_basic,instagram_manage_insights,pages_show_list';
+              const authUrl = `https://www.facebook.com/v19.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&state=ig_connect`;
+              window.location.href = authUrl;
+            }}
+          >
+            Conectar Instagram
+          </button>
         </div>
         {/* WhatsApp */}
         <div style={{ background: '#23272f', borderRadius: 16, padding: 24, minWidth: 280, maxWidth: 340, flex: 1, borderTop: '4px solid #25D366', boxShadow: '0 2px 12px #0004' }}>
