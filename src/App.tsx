@@ -10,6 +10,7 @@ import NotificationsSection from './components/NotificationsSection';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import UserDataDeletion from './pages/UserDataDeletion';
+import InstagramCallback from './pages/InstagramCallback';
 
 const MENU_ITEMS = [
   { label: 'Home', icon: '🏠' },
@@ -466,6 +467,9 @@ function App() {
   }
   if (legalPath === '/user-data-deletion') {
     return <UserDataDeletion />;
+  }
+  if (legalPath === '/instagram-callback') {
+    return <InstagramCallback />;
   }
 
   // Só exibir Auth se não for uma página legal
