@@ -40,7 +40,7 @@ export default function FacebookDashboard({
   const [loadingPosts, setLoadingPosts] = useState(false);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'posts' | 'messages' | 'create'>('overview');
-  const [newPost, setNewPost] = useState({ message: '', type: 'text' as const, media: null as File | null });
+  const [newPost, setNewPost] = useState({ message: '', type: 'text' as 'text' | 'image' | 'video', media: null as File | null });
   const [creatingPost, setCreatingPost] = useState(false);
 
   // Verificar callback do Facebook OAuth
