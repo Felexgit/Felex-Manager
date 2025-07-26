@@ -453,12 +453,6 @@ function App() {
     }
   }, []);
 
-  if (!user) return <Auth onAuth={() => supabase.auth.getUser().then(({ data }) => setUser(data.user))} />;
-
-  // Simulação de foto e nome do usuário
-  const userName = user?.email?.split('@')[0] || 'Usuário';
-  const userPhoto = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=1877f2&color=fff&size=128`;
-
   // Renderização de páginas legais conforme o path
   const legalPath = window.location.pathname;
   if (legalPath === '/privacy-policy') {
@@ -473,6 +467,13 @@ function App() {
     const UserDataDeletion = require('./pages/UserDataDeletion').default;
     return <UserDataDeletion />;
   }
+
+  // Só exibir Auth se não for uma página legal
+  if (!user) return <Auth onAuth={() => supabase.auth.getUser().then(({ data }) => setUser(data.user))} />;
+
+  // Simulação de foto e nome do usuário
+  const userName = user?.email?.split('@')[0] || 'Usuário';
+  const userPhoto = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=1877f2&color=fff&size=128`;
 
   return (
     <div className="App">
