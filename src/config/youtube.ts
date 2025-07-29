@@ -1,6 +1,6 @@
 export const YOUTUBE_CONFIG = {
-  CLIENT_ID: process.env.REACT_APP_YOUTUBE_CLIENT_ID || '895426659962-m3hthn9787ahqa82b1n3aqdi9hq7hp5q.apps.googleusercontent.com',
-  CLIENT_SECRET: process.env.REACT_APP_YOUTUBE_CLIENT_SECRET || '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',
+  CLIENT_ID: process.env.REACT_APP_YOUTUBE_CLIENT_ID || 'YOUR_YOUTUBE_CLIENT_ID',
+  CLIENT_SECRET: process.env.REACT_APP_YOUTUBE_CLIENT_SECRET || 'YOUR_YOUTUBE_CLIENT_SECRET',
   REDIRECT_URI: process.env.NODE_ENV === 'development' 
     ? 'http://localhost:3000/' 
     : 'https://felex-manager.vercel.app/',
@@ -15,6 +15,6 @@ export const YOUTUBE_API_BASE_URL = 'https://www.googleapis.com/youtube/v3';
 
 // API Keys for YouTube Data API
 export const YOUTUBE_API_KEYS = {
-  PRIMARY: process.env.REACT_APP_YOUTUBE_API_KEY_1 || 'AIzaSyAzy2pVC5SGFqotgHKWBNL8zY9BcFr7lGw',
-  SECONDARY: process.env.REACT_APP_YOUTUBE_API_KEY_2 || 'AIzaSyBkGjZ2L1A3YPHpapY9fz8pkDURJxrbLrk'
+  PRIMARY: process.env.REACT_APP_YOUTUBE_API_KEY_1 || 'YOUR_YOUTUBE_API_KEY_1',
+  SECONDARY: process.env.REACT_APP_YOUTUBE_API_KEY_2 || 'YOUR_YOUTUBE_API_KEY_2'
 }; 

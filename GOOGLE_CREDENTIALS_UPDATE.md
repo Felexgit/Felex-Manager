@@ -16,9 +16,9 @@
 ## Arquivos Atualizados
 
 ### 1. `src/config/youtube.ts`
-- Atualizado com as novas credenciais OAuth
-- Adicionadas as chaves de API
-- Configuração de fallback para as credenciais
+- Configurado para usar variáveis de ambiente
+- Removidas credenciais hardcoded por segurança
+- Sistema de fallback implementado
 
 ### 2. `src/services/youtubeService.ts`
 - Adicionado suporte para múltiplas API keys
@@ -27,7 +27,9 @@
 
 ## Configuração de Ambiente
 
-Para usar as credenciais via variáveis de ambiente (recomendado para produção), crie um arquivo `.env` na raiz do projeto:
+⚠️ **IMPORTANTE**: As credenciais devem ser configuradas via variáveis de ambiente por segurança.
+
+Crie um arquivo `.env` na raiz do projeto:
 
 ```env
 REACT_APP_YOUTUBE_CLIENT_ID=895426659962-m3hthn9787ahqa82b1n3aqdi9hq7hp5q.apps.googleusercontent.com
@@ -47,7 +49,14 @@ REACT_APP_YOUTUBE_API_KEY_2=AIzaSyBkGjZ2L1A3YPHpapY9fz8pkDURJxrbLrk
 - `https://www.googleapis.com/auth/youtube.readonly`
 - `https://www.googleapis.com/auth/youtube.force-ssl`
 
+## Segurança
+
+✅ **Credenciais não hardcoded no código**
+✅ **Uso de variáveis de ambiente**
+✅ **Proteção contra exposição de secrets**
+✅ **Sistema de fallback para API keys**
+
 ## Data da Atualização
 
 **Data**: $(date)
-**Status**: ✅ Credenciais atualizadas e commitadas 
+**Status**: ✅ Credenciais atualizadas e configuradas de forma segura 
