@@ -1,4 +1,4 @@
-import { YOUTUBE_CONFIG, YOUTUBE_API_BASE_URL } from '../config/youtube';
+import { YOUTUBE_CONFIG, YOUTUBE_API_BASE_URL, YOUTUBE_API_KEYS } from '../config/youtube';
 
 export interface YouTubeVideo {
   id: string;
@@ -25,6 +25,7 @@ export interface YouTubeChannel {
 
 class YouTubeService {
   private accessToken: string | null = null;
+  private currentApiKey: string = YOUTUBE_API_KEYS.PRIMARY;
 
   setAccessToken(token: string) {
     this.accessToken = token;
@@ -48,6 +49,32 @@ class YouTubeService {
     });
 
     if (!response.ok) {
+      throw new Error(`Erro na API do YouTube: ${response.statusText}`);
+    }
+
+    return response.json();
+  }
+
+  // Método para fazer requisições que não precisam de OAuth (usando API Key)
+  private async makePublicRequest(endpoint: string, params: Record<string, string> = {}): Promise<any> {
+    const url = new URL(`${YOUTUBE_API_BASE_URL}${endpoint}`);
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
+    url.searchParams.append('key', this.currentApiKey);
+
+    const response = await fetch(url.toString(), {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      // Se a primeira API key falhar, tenta a segunda
+      if (this.currentApiKey === YOUTUBE_API_KEYS.PRIMARY) {
+        this.currentApiKey = YOUTUBE_API_KEYS.SECONDARY;
+        return this.makePublicRequest(endpoint, params);
+      }
       throw new Error(`Erro na API do YouTube: ${response.statusText}`);
     }
 

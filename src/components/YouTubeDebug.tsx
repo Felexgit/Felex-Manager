@@ -1,22 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { YOUTUBE_CONFIG } from '../config/youtube';
+import { checkEnvironmentVariables, logEnvironmentVariables } from '../utils/envCheck';
 
 export default function YouTubeDebug() {
+  useEffect(() => {
+    logEnvironmentVariables();
+  }, []);
+
   const checkConfiguration = () => {
     const issues = [];
     
-    // Verificar Client ID
+    // Verificar variáveis de ambiente
+    const envIssues = checkEnvironmentVariables();
+    issues.push(...envIssues);
+    
+    // Verificar configuração do YouTube
     if (!YOUTUBE_CONFIG.CLIENT_ID || YOUTUBE_CONFIG.CLIENT_ID === 'YOUR_YOUTUBE_CLIENT_ID') {
-      issues.push('❌ Client ID não configurado');
+      issues.push('❌ Client ID não configurado no YOUTUBE_CONFIG');
     } else {
-      issues.push('✅ Client ID configurado');
+      issues.push('✅ Client ID configurado no YOUTUBE_CONFIG');
     }
     
-    // Verificar Client Secret
     if (!YOUTUBE_CONFIG.CLIENT_SECRET || YOUTUBE_CONFIG.CLIENT_SECRET === 'YOUR_YOUTUBE_CLIENT_SECRET') {
-      issues.push('❌ Client Secret não configurado');
+      issues.push('❌ Client Secret não configurado no YOUTUBE_CONFIG');
     } else {
-      issues.push('✅ Client Secret configurado');
+      issues.push('✅ Client Secret configurado no YOUTUBE_CONFIG');
     }
     
     // Verificar Redirect URI
@@ -24,13 +32,6 @@ export default function YouTubeDebug() {
       issues.push('❌ Redirect URI não configurado');
     } else {
       issues.push(`✅ Redirect URI: ${YOUTUBE_CONFIG.REDIRECT_URI}`);
-    }
-    
-    // Verificar ambiente
-    if (process.env.NODE_ENV === 'development') {
-      issues.push('🔧 Ambiente de desenvolvimento');
-    } else {
-      issues.push('🚀 Ambiente de produção');
     }
     
     return issues;
