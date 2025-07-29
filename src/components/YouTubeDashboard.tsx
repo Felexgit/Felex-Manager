@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { youtubeService } from '../services/youtubeService';
+import YouTubeDebug from './YouTubeDebug';
 
 interface YouTubeVideo {
   id: string;
@@ -303,6 +304,9 @@ export default function YouTubeDashboard({
           >
             {isConnecting ? 'Conectando...' : '🔗 Conectar YouTube'}
           </button>
+          
+          {/* Debug Component */}
+          <YouTubeDebug />
         </div>
       </div>
     );
