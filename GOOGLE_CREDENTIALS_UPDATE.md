@@ -3,12 +3,12 @@
 ## Credenciais Atualizadas
 
 ### Cliente OAuth 2.0
-- **ID do Cliente**: `895426659962-m3hthn9787ahqa82b1n3aqdi9hq7hp5q.apps.googleusercontent.com`
-- **Chave Secreta**: `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`
+- **ID do Cliente**: `[CONFIGURADO VIA VARIÁVEL DE AMBIENTE]`
+- **Chave Secreta**: `[CONFIGURADO VIA VARIÁVEL DE AMBIENTE]`
 
 ### Chaves de API
-- **API Key 1**: `AIzaSyAzy2pVC5SGFqotgHKWBNL8zY9BcFr7lGw`
-- **API Key 2**: `AIzaSyBkGjZ2L1A3YPHpapY9fz8pkDURJxrbLrk`
+- **API Key 1**: `[CONFIGURADO VIA VARIÁVEL DE AMBIENTE]`
+- **API Key 2**: `[CONFIGURADO VIA VARIÁVEL DE AMBIENTE]`
 
 ### Nome da Aplicação
 - **Nome**: Flex Manager
@@ -29,13 +29,13 @@
 
 ⚠️ **IMPORTANTE**: As credenciais devem ser configuradas via variáveis de ambiente por segurança.
 
-Crie um arquivo `.env` na raiz do projeto:
+Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
 ```env
-REACT_APP_YOUTUBE_CLIENT_ID=895426659962-m3hthn9787ahqa82b1n3aqdi9hq7hp5q.apps.googleusercontent.com
-REACT_APP_YOUTUBE_CLIENT_SECRET=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
-REACT_APP_YOUTUBE_API_KEY_1=AIzaSyAzy2pVC5SGFqotgHKWBNL8zY9BcFr7lGw
-REACT_APP_YOUTUBE_API_KEY_2=AIzaSyBkGjZ2L1A3YPHpapY9fz8pkDURJxrbLrk
+REACT_APP_YOUTUBE_CLIENT_ID=seu_client_id_aqui
+REACT_APP_YOUTUBE_CLIENT_SECRET=seu_client_secret_aqui
+REACT_APP_YOUTUBE_API_KEY_1=sua_api_key_1_aqui
+REACT_APP_YOUTUBE_API_KEY_2=sua_api_key_2_aqui
 ```
 
 ## URIs de Redirecionamento Configurados
