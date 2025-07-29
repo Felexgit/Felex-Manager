@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from './supabaseClient';
 import { User } from '@supabase/supabase-js';
 import Auth from './Auth';
-import FacebookDashboard from './components/FacebookDashboard';
+import YouTubeDashboard from './components/YouTubeDashboard';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import UserDataDeletion from './pages/UserDataDeletion';
 import InstagramCallback from './pages/InstagramCallback';
 import WhatsAppCallback from './pages/WhatsAppCallback';
+import { YOUTUBE_CONFIG } from './config/youtube';
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
-  const [facebookUser, setFacebookUser] = useState<any>(null);
+  const [youtubeUser, setYouTubeUser] = useState<any>(null);
   const [isConnecting, setIsConnecting] = useState(false);
 
   useEffect(() => {
@@ -40,16 +41,16 @@ function App() {
   // Só exibir Auth se não for uma página legal
   if (!user) return <Auth onAuth={() => supabase.auth.getUser().then(({ data }) => setUser(data.user))} />;
 
-  const connectFacebook = async () => {
+  const connectYouTube = async () => {
     setIsConnecting(true);
     try {
-      const clientId = '3131820566980255';
-      const redirectUri = encodeURIComponent('https://felex-manager.vercel.app/');
-      const scope = 'pages_show_list,pages_read_engagement,pages_manage_posts,pages_manage_metadata,user_posts';
-      const authUrl = `https://www.facebook.com/v19.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&state=fb_connect`;
+      const clientId = YOUTUBE_CONFIG.CLIENT_ID;
+      const redirectUri = encodeURIComponent(YOUTUBE_CONFIG.REDIRECT_URI);
+      const scope = YOUTUBE_CONFIG.SCOPES.join(' ');
+      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&state=yt_connect&access_type=offline`;
       window.location.href = authUrl;
     } catch (error) {
-      console.error('Erro ao conectar Facebook:', error);
+      console.error('Erro ao conectar YouTube:', error);
       setIsConnecting(false);
     }
   };
@@ -75,11 +76,11 @@ function App() {
         alignItems: 'center'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700, color: '#1877f2' }}>
-            📘 Felex Manager
+          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700, color: '#ff0000' }}>
+            📺 Felex Manager
           </h1>
           <span style={{ fontSize: 14, color: '#b0b3b8' }}>
-            Gerenciador de Facebook
+            Gerenciador de YouTube
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -106,12 +107,12 @@ function App() {
 
       {/* Main Content */}
       <main style={{ padding: '32px 24px', maxWidth: 1200, margin: '0 auto' }}>
-        <FacebookDashboard 
-          facebookUser={facebookUser}
-          setFacebookUser={setFacebookUser}
+        <YouTubeDashboard 
+          youtubeUser={youtubeUser}
+          setYouTubeUser={setYouTubeUser}
           isConnecting={isConnecting}
           setIsConnecting={setIsConnecting}
-          connectFacebook={connectFacebook}
+          connectYouTube={connectYouTube}
         />
       </main>
 
