@@ -2,6 +2,27 @@ import React, { useState, useMemo } from 'react';
 import { Home, MessageSquare, LayoutTemplate, Calendar, Bot, BarChart2, Settings, Image as ImageIcon, Video, ChevronDown, Search, Bell, ChevronLeft, ChevronRight, Plus, X, Clock, UploadCloud, Youtube, Cpu, Puzzle, BrainCircuit, Webhook, FileText, Trash2, Edit, MoreVertical, Power, Sparkles, Wand, BookOpen, Save, UserPlus, ArrowLeft } from 'lucide-react';
 import './App.css';
 
+// --- TIPOS E INTERFACES ---
+interface Rule {
+    id: number;
+    name: string;
+    content: string;
+}
+
+interface Agent {
+    id: number;
+    name: string;
+    description: string;
+    model: string;
+    rules: number[];
+}
+
+interface AiModel {
+    id: string;
+    name: string;
+    status: string;
+}
+
 // --- ÍCONES E DADOS MOCK ---
 
 const InstagramIcon = (props: any) => (
@@ -30,7 +51,7 @@ const platformDetails = {
     tiktok: { icon: <TikTokIcon className="w-3.5 h-3.5 text-white"/>, color: 'bg-sky-500', name: 'TikTok' },
 };
 
-const mockAiModels = [
+const mockAiModels: AiModel[] = [
     { id: 'openai_dalle3', name: 'OpenAI DALL-E 3', status: 'Conectado' },
     { id: 'midjourney_v6', name: 'Midjourney v6', status: 'Ação Necessária' },
 ];
@@ -254,7 +275,7 @@ const MemorySection = () => (
 );
 
 // --- NOVOS COMPONENTES: EDITOR DE REGRAS E CRIADOR DE AGENTES ---
-const RuleEditor = ({ onSave, onBack }: { onSave: (rule: any) => void; onBack: () => void }) => {
+const RuleEditor = ({ onSave, onBack }: { onSave: (rule: Rule) => void; onBack: () => void }) => {
     const [name, setName] = useState('');
     const [content, setContent] = useState('');
     
@@ -288,16 +309,16 @@ const RuleEditor = ({ onSave, onBack }: { onSave: (rule: any) => void; onBack: (
     );
 };
 
-const AgentCreator = ({ onClose, onSaveAgent, rules, setRules }: { onClose: () => void; onSaveAgent: (agent: any) => void; rules: any[]; setRules: (rules: any[]) => void }) => {
+const AgentCreator = ({ onClose, onSaveAgent, rules, setRules }: { onClose: () => void; onSaveAgent: (agent: Agent) => void; rules: Rule[]; setRules: React.Dispatch<React.SetStateAction<Rule[]>> }) => {
     const [isEditingRule, setIsEditingRule] = useState(false);
     const [agentName, setAgentName] = useState('');
     const [agentDesc, setAgentDesc] = useState('');
     const [selectedModel, setSelectedModel] = useState(mockAiModels[0].id);
     const [selectedRules, setSelectedRules] = useState<number[]>([]);
 
-    const handleSaveRule = (newRule: any) => {
-        setRules(prev => [...prev, newRule]);
-        setSelectedRules(prev => [...prev, newRule.id]);
+    const handleSaveRule = (newRule: Rule) => {
+        setRules((prev: Rule[]) => [...prev, newRule]);
+        setSelectedRules((prev: number[]) => [...prev, newRule.id]);
         setIsEditingRule(false);
     };
     
@@ -360,11 +381,11 @@ const AgentCreator = ({ onClose, onSaveAgent, rules, setRules }: { onClose: () =
     );
 };
 
-const AgentsSection = ({ agents, setAgents, rules, setRules }: { agents: any[]; setAgents: (agents: any[]) => void; rules: any[]; setRules: (rules: any[]) => void }) => {
+const AgentsSection = ({ agents, setAgents, rules, setRules }: { agents: Agent[]; setAgents: React.Dispatch<React.SetStateAction<Agent[]>>; rules: Rule[]; setRules: React.Dispatch<React.SetStateAction<Rule[]>> }) => {
     const [isCreating, setIsCreating] = useState(false);
 
-    const handleSaveAgent = (newAgent: any) => {
-        setAgents(prev => [...prev, newAgent]);
+    const handleSaveAgent = (newAgent: Agent) => {
+        setAgents((prev: Agent[]) => [...prev, newAgent]);
         setIsCreating(false);
     };
     
@@ -427,7 +448,7 @@ const AgentsSection = ({ agents, setAgents, rules, setRules }: { agents: any[]; 
     );
 };
 
-const AiStudioSection = ({ agents, setAgents, rules, setRules }: { agents: any[]; setAgents: (agents: any[]) => void; rules: any[]; setRules: (rules: any[]) => void }) => {
+const AiStudioSection = ({ agents, setAgents, rules, setRules }: { agents: Agent[]; setAgents: React.Dispatch<React.SetStateAction<Agent[]>>; rules: Rule[]; setRules: React.Dispatch<React.SetStateAction<Rule[]>> }) => {
     const [activeTab, setActiveTab] = useState('agents');
     const renderContent = () => {
         switch (activeTab) {
@@ -480,7 +501,7 @@ const CalendarSection = () => {
 };
 
 // --- CONTEÚDO PRINCIPAL ---
-const MainContent = ({ section, agents, setAgents, rules, setRules }: { section: string; agents: any[]; setAgents: (agents: any[]) => void; rules: any[]; setRules: (rules: any[]) => void }) => {
+const MainContent = ({ section, agents, setAgents, rules, setRules }: { section: string; agents: Agent[]; setAgents: React.Dispatch<React.SetStateAction<Agent[]>>; rules: Rule[]; setRules: React.Dispatch<React.SetStateAction<Rule[]>> }) => {
     const sections = {
         inicio: { title: 'Início', component: <SectionPlaceholder title="Bem-vindo ao seu Dashboard" description="Aqui você verá um resumo do desempenho das suas contas, posts agendados e as últimas atividades." icon={<Home size={64} className="text-indigo-400"/>} /> },
         inbox: { title: 'Caixa de Entrada Unificada', component: <SectionPlaceholder title="Caixa de Entrada" description="Gerencie todos os seus comentários e mensagens diretas do Instagram, Facebook e TikTok em um só lugar." icon={<MessageSquare size={64} className="text-indigo-400"/>} /> },
@@ -506,11 +527,11 @@ export default function App() {
     const [activeSection, setActiveSection] = useState('automacao');
     
     // Estado para agentes e regras, agora no componente pai correto
-    const [agents, setAgents] = useState([
+    const [agents, setAgents] = useState<Agent[]>([
         { id: 1, name: 'Agente de Conteúdo', description: 'Cria posts para Instagram e TikTok', model: 'openai_dalle3', rules: [1, 2] },
         { id: 2, name: 'Agente de Respostas', description: 'Responde comentários e DMs', model: 'openai_dalle3', rules: [1, 3] },
     ]);
-    const [rules, setRules] = useState([
+    const [rules, setRules] = useState<Rule[]>([
         { id: 1, name: 'Tom de Voz: Amigável e Jovem', content: 'Use uma linguagem informal, emojis e gírias populares. Mantenha as respostas curtas e diretas.' },
         { id: 2, name: 'Comportamento: Foco em E-commerce', content: 'Sempre que possível, relacione o conteúdo com produtos da loja. Destaque promoções e novidades. Use CTAs para compra.' },
         { id: 3, name: 'Comportamento: Suporte ao Cliente', content: 'Seja empático e solícito. Se não souber a resposta, encaminhe para o suporte humano. Nunca prometa o que não pode cumprir.' },
