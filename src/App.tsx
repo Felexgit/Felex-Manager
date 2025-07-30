@@ -4,7 +4,7 @@ import './App.css';
 
 // --- IMPORTS ORGANIZADOS ---
 import { Rule, Agent, AiModel, MenuItem, TabItem } from './types';
-import { aiImagePrompts, mockPosts, platformDetails, mockAiModels, InstagramIcon, TikTokIcon } from './data/mockData';
+import { aiImagePrompts, mockPosts, getPlatformDetails, mockAiModels } from './data/mockData';
 import { Icon } from './components/ui/Icon';
 import { NavItem } from './components/ui/NavItem';
 
