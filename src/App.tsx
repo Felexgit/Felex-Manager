@@ -1,74 +1,21 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Home, MessageSquare, LayoutTemplate, Calendar, Bot, BarChart2, Settings, Image as ImageIcon, Video, ChevronDown, Search, Bell, ChevronLeft, ChevronRight, Plus, X, Clock, UploadCloud, Youtube, Cpu, Puzzle, BrainCircuit, Webhook, FileText, Trash2, Edit, MoreVertical, Power, Sparkles, Wand, BookOpen, Save, UserPlus, ArrowLeft } from 'lucide-react';
 import './App.css';
 
-// --- TIPOS E INTERFACES ---
-interface Rule {
-    id: number;
-    name: string;
-    content: string;
-}
+// --- IMPORTS ORGANIZADOS ---
+import { Rule, Agent, AiModel, MenuItem, TabItem } from './types';
+import { aiImagePrompts, mockPosts, platformDetails, mockAiModels, InstagramIcon, TikTokIcon } from './data/mockData';
+import { Icon } from './components/ui/Icon';
+import { NavItem } from './components/ui/NavItem';
 
-interface Agent {
-    id: number;
-    name: string;
-    description: string;
-    model: string;
-    rules: number[];
-}
+// ========================================
+// 🎯 COMPONENTES PRINCIPAIS DA INTERFACE
+// ========================================
 
-interface AiModel {
-    id: string;
-    name: string;
-    status: string;
-}
-
-// --- ÍCONES E DADOS MOCK ---
-
-const InstagramIcon = (props: any) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-);
-
-const TikTokIcon = (props: any) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-2.43.05-4.84-.95-6.43-2.8-1.59-1.87-2.32-4.2-1.86-6.33.39-1.76 1.42-3.37 2.73-4.5.9-.79 1.86-1.4 2.8-1.9.12-2.18.01-4.36-.01-6.54.01-1.22.31-2.42.86-3.52.91-1.8 2.84-2.93 4.88-3.01.01-.01.01-.01.02-.01z"></path></svg>
-);
-
-const aiImagePrompts = [
-    { category: "E-commerce & Products", prompts: ["A minimalist photo of a luxury watch on a marble surface, with soft morning light, hyper-realistic, 8k.","Lifestyle shot of a person wearing our new sneaker, walking through a vibrant city street, motion blur, candid style.","Flat lay of organic skincare products surrounded by fresh green leaves and water droplets, top-down view, clean aesthetic."]},
-    { category: "Food & Restaurant", prompts: ["Overhead shot of a rustic wooden table filled with a vibrant mediterranean feast, natural light, appetizing.","Action shot of a chef garnishing a gourmet pasta dish with fresh basil, steam rising, shallow depth of field.","A colorful stack of pancakes dripping with maple syrup and topped with fresh berries, bright and cheerful."]},
-    { category: "Travel & Lifestyle", prompts: ["Breathtaking landscape painting of a serene mountain lake at sunrise, with misty forests, style of Albert Bierstadt.","A person with a backpack looking out over a dramatic cliffside view, golden hour, sense of adventure.","Illustration of a vintage camper van parked on a beach at sunset, pastel colors, retro vibe."]},
-];
-
-const mockPosts = [
-    { id: 1, date: '2025-07-05T10:00:00', platform: 'instagram', title: 'Lançamento nova coleção de verão!', mediaType: 'image' },
-    { id: 2, date: '2025-07-08T18:30:00', platform: 'tiktok', title: 'Challenge da semana #SummerVibes', mediaType: 'video' },
-    { id: 3, date: '2025-07-12T15:00:00', platform: 'youtube', title: 'VLOG: Bastidores do nosso ensaio fotográfico', mediaType: 'video' },
-];
-
-const platformDetails = {
-    youtube: { icon: <Youtube size={14}/>, color: 'bg-red-500', name: 'YouTube' },
-    instagram: { icon: <InstagramIcon className="w-3.5 h-3.5"/>, color: 'bg-pink-500', name: 'Instagram' },
-    tiktok: { icon: <TikTokIcon className="w-3.5 h-3.5 text-white"/>, color: 'bg-sky-500', name: 'TikTok' },
-};
-
-const mockAiModels: AiModel[] = [
-    { id: 'openai_dalle3', name: 'OpenAI DALL-E 3', status: 'Conectado' },
-    { id: 'midjourney_v6', name: 'Midjourney v6', status: 'Ação Necessária' },
-];
-
-// --- COMPONENTES AUXILIARES ---
-const Icon = ({ children, className }: { children: React.ReactNode; className?: string }) => <div className={`text-gray-400 ${className}`}>{children}</div>;
-
-const NavItem = ({ icon, label, active, onClick }: { icon: React.ReactNode; label: string; active: boolean; onClick: () => void }) => (
-    <li onClick={onClick} className={`flex items-center p-3 my-1 rounded-lg cursor-pointer transition-all duration-200 ${
-        active ? 'bg-indigo-600 text-white shadow-lg' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-    }`}>
-        {icon}
-        <span className="ml-4 font-medium">{label}</span>
-    </li>
-);
-
-// --- COMPONENTES PRINCIPAIS ---
+/**
+ * Sidebar - Navegação principal da aplicação
+ * Contém menu de navegação e logo
+ */
 const Sidebar = ({ activeSection, setActiveSection }: { activeSection: string; setActiveSection: (section: string) => void }) => {
     const menuItems = [
         { id: 'inicio', label: 'Início', icon: <Home size={22} /> },
@@ -94,6 +41,10 @@ const Sidebar = ({ activeSection, setActiveSection }: { activeSection: string; s
     );
 };
 
+/**
+ * Header - Cabeçalho da aplicação
+ * Contém título, busca e perfil do usuário
+ */
 const Header = ({ title }: { title: string }) => (
     <header className="flex items-center justify-between p-6 bg-gray-800/50 backdrop-blur-sm border-b border-gray-700 sticky top-0 z-20">
         <h2 className="text-3xl font-bold text-white">{title}</h2>
@@ -111,6 +62,10 @@ const Header = ({ title }: { title: string }) => (
     </header>
 );
 
+/**
+ * SectionPlaceholder - Componente para seções em desenvolvimento
+ * Exibe uma mensagem informativa com ícone
+ */
 const SectionPlaceholder = ({ title, description, icon }: { title: string; description: string; icon: React.ReactNode }) => (
     <div className="flex flex-col items-center justify-center h-full text-center text-gray-500 p-8">
         <div className="bg-gray-800 p-6 rounded-full mb-6">{icon}</div>
@@ -119,7 +74,14 @@ const SectionPlaceholder = ({ title, description, icon }: { title: string; descr
     </div>
 );
 
-// --- SEÇÃO AI STUDIO ---
+// ========================================
+// 🤖 SEÇÃO AI STUDIO - COMPONENTES
+// ========================================
+
+/**
+ * AiStudioSubNav - Navegação secundária do AI Studio
+ * Contém abas para diferentes funcionalidades
+ */
 const AiStudioSubNav = ({ activeTab, setActiveTab }: { activeTab: string; setActiveTab: (tab: string) => void }) => {
     const tabs = [
         { id: 'create', label: 'Criar', icon: <Sparkles size={18} /> },
@@ -144,6 +106,10 @@ const AiStudioSubNav = ({ activeTab, setActiveTab }: { activeTab: string; setAct
     );
 };
 
+/**
+ * CreateSection - Gerador de conteúdo com IA
+ * Permite criar imagens e vídeos usando prompts
+ */
 const CreateSection = () => (
     <div className="p-8">
         <div className="bg-gray-800/80 rounded-xl p-6 mb-8 border border-gray-700">
@@ -169,6 +135,10 @@ const CreateSection = () => (
     </div>
 );
 
+/**
+ * ModelsSection - Gerenciamento de modelos de IA
+ * Permite conectar e configurar diferentes modelos
+ */
 const ModelsSection = () => (
     <div className="p-8">
         <div className="max-w-4xl mx-auto">
@@ -203,6 +173,10 @@ const ModelsSection = () => (
     </div>
 );
 
+/**
+ * ToolsSection - Integrações e ferramentas externas
+ * Permite conectar agentes a serviços de terceiros
+ */
 const ToolsSection = () => (
     <div className="p-8">
         <div className="max-w-4xl mx-auto">
@@ -234,6 +208,10 @@ const ToolsSection = () => (
     </div>
 );
 
+/**
+ * MemorySection - Gerenciamento de memória dos agentes
+ * Permite upload e gerenciamento de arquivos de conhecimento
+ */
 const MemorySection = () => (
     <div className="p-8">
         <div className="max-w-4xl mx-auto">
@@ -274,7 +252,14 @@ const MemorySection = () => (
     </div>
 );
 
-// --- NOVOS COMPONENTES: EDITOR DE REGRAS E CRIADOR DE AGENTES ---
+// ========================================
+// 🛠️ COMPONENTES DE CRIAÇÃO E EDIÇÃO
+// ========================================
+
+/**
+ * RuleEditor - Editor de regras para agentes
+ * Permite criar e editar comportamentos dos agentes
+ */
 const RuleEditor = ({ onSave, onBack }: { onSave: (rule: Rule) => void; onBack: () => void }) => {
     const [name, setName] = useState('');
     const [content, setContent] = useState('');
@@ -309,6 +294,10 @@ const RuleEditor = ({ onSave, onBack }: { onSave: (rule: Rule) => void; onBack: 
     );
 };
 
+/**
+ * AgentCreator - Criador de agentes de IA
+ * Interface para criar novos agentes com regras e modelos
+ */
 const AgentCreator = ({ onClose, onSaveAgent, rules, setRules }: { onClose: () => void; onSaveAgent: (agent: Agent) => void; rules: Rule[]; setRules: React.Dispatch<React.SetStateAction<Rule[]>> }) => {
     const [isEditingRule, setIsEditingRule] = useState(false);
     const [agentName, setAgentName] = useState('');
@@ -381,6 +370,10 @@ const AgentCreator = ({ onClose, onSaveAgent, rules, setRules }: { onClose: () =
     );
 };
 
+/**
+ * AgentsSection - Seção de gerenciamento de agentes
+ * Lista e gerencia todos os agentes criados
+ */
 const AgentsSection = ({ agents, setAgents, rules, setRules }: { agents: Agent[]; setAgents: React.Dispatch<React.SetStateAction<Agent[]>>; rules: Rule[]; setRules: React.Dispatch<React.SetStateAction<Rule[]>> }) => {
     const [isCreating, setIsCreating] = useState(false);
 
@@ -448,6 +441,10 @@ const AgentsSection = ({ agents, setAgents, rules, setRules }: { agents: Agent[]
     );
 };
 
+/**
+ * AiStudioSection - Seção principal do AI Studio
+ * Orquestra todas as funcionalidades do AI Studio
+ */
 const AiStudioSection = ({ agents, setAgents, rules, setRules }: { agents: Agent[]; setAgents: React.Dispatch<React.SetStateAction<Agent[]>>; rules: Rule[]; setRules: React.Dispatch<React.SetStateAction<Rule[]>> }) => {
     const [activeTab, setActiveTab] = useState('agents');
     const renderContent = () => {
@@ -470,7 +467,14 @@ const AiStudioSection = ({ agents, setAgents, rules, setRules }: { agents: Agent
     );
 };
 
-// --- SEÇÃO CALENDÁRIO ---
+// ========================================
+// 📅 SEÇÃO CALENDÁRIO - COMPONENTES
+// ========================================
+
+/**
+ * CreatePostModal - Modal para criar publicações
+ * Interface para agendar posts no calendário
+ */
 const CreatePostModal = ({ isOpen, onClose, date }: { isOpen: boolean; onClose: () => void; date: string }) => {
     if(!isOpen) return null;
     return(
@@ -492,6 +496,10 @@ const CreatePostModal = ({ isOpen, onClose, date }: { isOpen: boolean; onClose: 
     );
 };
 
+/**
+ * CalendarSection - Seção do calendário
+ * Visualização e gerenciamento de publicações agendadas
+ */
 const CalendarSection = () => {
     return(
         <div className="p-8 h-full flex flex-col">
@@ -500,7 +508,14 @@ const CalendarSection = () => {
     );
 };
 
-// --- CONTEÚDO PRINCIPAL ---
+// ========================================
+// 🎯 CONTEÚDO PRINCIPAL - ORQUESTRAÇÃO
+// ========================================
+
+/**
+ * MainContent - Conteúdo principal da aplicação
+ * Gerencia a exibição das diferentes seções
+ */
 const MainContent = ({ section, agents, setAgents, rules, setRules }: { section: string; agents: Agent[]; setAgents: React.Dispatch<React.SetStateAction<Agent[]>>; rules: Rule[]; setRules: React.Dispatch<React.SetStateAction<Rule[]>> }) => {
     const sections = {
         inicio: { title: 'Início', component: <SectionPlaceholder title="Bem-vindo ao seu Dashboard" description="Aqui você verá um resumo do desempenho das suas contas, posts agendados e as últimas atividades." icon={<Home size={64} className="text-indigo-400"/>} /> },
@@ -522,7 +537,14 @@ const MainContent = ({ section, agents, setAgents, rules, setRules }: { section:
     );
 };
 
-// --- COMPONENTE APP PRINCIPAL ---
+// ========================================
+// 🚀 COMPONENTE APP PRINCIPAL
+// ========================================
+
+/**
+ * App - Componente principal da aplicação
+ * Gerencia o estado global e estrutura da interface
+ */
 export default function App() {
     const [activeSection, setActiveSection] = useState('automacao');
     
