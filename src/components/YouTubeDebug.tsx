@@ -1,71 +1,80 @@
-import React, { useEffect } from 'react';
-import { YOUTUBE_CONFIG } from '../config/youtube';
-import { checkEnvironmentVariables, logEnvironmentVariables } from '../utils/envCheck';
+import React from 'react';
+import { YOUTUBE_CONFIG, YOUTUBE_API_KEYS } from '../config/youtube';
 
-export default function YouTubeDebug() {
-  useEffect(() => {
-    logEnvironmentVariables();
-  }, []);
-
-  const checkConfiguration = () => {
-    const issues = [];
-    
-    // Verificar variáveis de ambiente
-    const envIssues = checkEnvironmentVariables();
-    issues.push(...envIssues);
-    
-    // Verificar configuração do YouTube
-    if (!YOUTUBE_CONFIG.CLIENT_ID || YOUTUBE_CONFIG.CLIENT_ID === 'YOUR_YOUTUBE_CLIENT_ID') {
-      issues.push('❌ Client ID não configurado no YOUTUBE_CONFIG');
-    } else {
-      issues.push('✅ Client ID configurado no YOUTUBE_CONFIG');
+const YouTubeDebug: React.FC = () => {
+  const debugInfo = {
+    environment: process.env.NODE_ENV,
+    clientId: YOUTUBE_CONFIG.CLIENT_ID,
+    clientSecret: YOUTUBE_CONFIG.CLIENT_SECRET ? '***CONFIGURED***' : '❌ NOT CONFIGURED',
+    redirectUri: YOUTUBE_CONFIG.REDIRECT_URI,
+    apiKey1: YOUTUBE_API_KEYS.PRIMARY,
+    apiKey2: YOUTUBE_API_KEYS.SECONDARY,
+    envVars: {
+      REACT_APP_YOUTUBE_CLIENT_ID: process.env.REACT_APP_YOUTUBE_CLIENT_ID,
+      REACT_APP_YOUTUBE_CLIENT_SECRET: process.env.REACT_APP_YOUTUBE_CLIENT_SECRET,
+      REACT_APP_YOUTUBE_API_KEY_1: process.env.REACT_APP_YOUTUBE_API_KEY_1,
+      REACT_APP_YOUTUBE_API_KEY_2: process.env.REACT_APP_YOUTUBE_API_KEY_2,
     }
-    
-    if (!YOUTUBE_CONFIG.CLIENT_SECRET || YOUTUBE_CONFIG.CLIENT_SECRET === 'YOUR_YOUTUBE_CLIENT_SECRET') {
-      issues.push('❌ Client Secret não configurado no YOUTUBE_CONFIG');
-    } else {
-      issues.push('✅ Client Secret configurado no YOUTUBE_CONFIG');
-    }
-    
-    // Verificar Redirect URI
-    if (!YOUTUBE_CONFIG.REDIRECT_URI) {
-      issues.push('❌ Redirect URI não configurado');
-    } else {
-      issues.push(`✅ Redirect URI: ${YOUTUBE_CONFIG.REDIRECT_URI}`);
-    }
-    
-    return issues;
   };
-
-  const issues = checkConfiguration();
 
   return (
     <div style={{ 
-      background: '#1a1d29', 
-      borderRadius: 8, 
-      padding: '16px', 
-      margin: '16px 0',
-      border: '1px solid #3a3b3c'
+      padding: '20px', 
+      backgroundColor: '#f5f5f5', 
+      borderRadius: '8px',
+      margin: '20px',
+      fontFamily: 'monospace'
     }}>
-      <h4 style={{ margin: '0 0 12px 0', color: '#e4e6eb' }}>🔧 Debug da Configuração do YouTube</h4>
-      <div style={{ fontSize: 14 }}>
-        {issues.map((issue, index) => (
-          <div key={index} style={{ marginBottom: 4, color: '#b0b3b8' }}>
-            {issue}
+      <h3>🔧 Debug da Configuração do YouTube</h3>
+      
+      <div style={{ marginBottom: '15px' }}>
+        <strong>Ambiente:</strong> {debugInfo.environment}
+      </div>
+      
+      <div style={{ marginBottom: '15px' }}>
+        <strong>Client ID:</strong> {debugInfo.clientId}
+      </div>
+      
+      <div style={{ marginBottom: '15px' }}>
+        <strong>Client Secret:</strong> {debugInfo.clientSecret}
+      </div>
+      
+      <div style={{ marginBottom: '15px' }}>
+        <strong>Redirect URI:</strong> {debugInfo.redirectUri}
+      </div>
+      
+      <div style={{ marginBottom: '15px' }}>
+        <strong>API Key 1:</strong> {debugInfo.apiKey1}
+      </div>
+      
+      <div style={{ marginBottom: '15px' }}>
+        <strong>API Key 2:</strong> {debugInfo.apiKey2}
+      </div>
+      
+      <h4>Variáveis de Ambiente:</h4>
+      <div style={{ backgroundColor: '#fff', padding: '10px', borderRadius: '4px' }}>
+        {Object.entries(debugInfo.envVars).map(([key, value]) => (
+          <div key={key} style={{ marginBottom: '5px' }}>
+            <strong>{key}:</strong> {value ? '✅ CONFIGURADA' : '❌ NÃO CONFIGURADA'}
           </div>
         ))}
       </div>
       
-      <div style={{ marginTop: 16, padding: '12px', background: '#23272f', borderRadius: 4 }}>
-        <div style={{ fontSize: 12, color: '#b0b3b8', marginBottom: 8 }}>
-          <strong>Configuração Atual:</strong>
-        </div>
-        <div style={{ fontSize: 11, color: '#6c757d', fontFamily: 'monospace' }}>
-          <div>Client ID: {YOUTUBE_CONFIG.CLIENT_ID.substring(0, 20)}...</div>
-          <div>Redirect URI: {YOUTUBE_CONFIG.REDIRECT_URI}</div>
-          <div>Ambiente: {process.env.NODE_ENV}</div>
-        </div>
+      <div style={{ 
+        marginTop: '20px', 
+        padding: '10px', 
+        backgroundColor: debugInfo.clientId.includes('YOUR_') ? '#ffebee' : '#e8f5e8',
+        borderRadius: '4px',
+        border: `2px solid ${debugInfo.clientId.includes('YOUR_') ? '#f44336' : '#4caf50'}`
+      }}>
+        <strong>Status:</strong> {
+          debugInfo.clientId.includes('YOUR_') 
+            ? '❌ CREDENCIAIS NÃO CONFIGURADAS' 
+            : '✅ CREDENCIAIS CONFIGURADAS'
+        }
       </div>
     </div>
   );
-} 
+};
+
+export default YouTubeDebug; 
